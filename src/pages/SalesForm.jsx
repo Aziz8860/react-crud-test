@@ -1,5 +1,30 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import {
+  Container,
+  Typography,
+  Button,
+  Paper,
+  TextField,
+  Grid,
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  IconButton,
+  InputAdornment,
+  Divider,
+  Stack,
+  Card,
+  CardContent,
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 const SalesForm = () => {
   const navigate = useNavigate();
@@ -174,234 +199,291 @@ const SalesForm = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6">
-        {isEditMode ? "Edit Faktur" : "Tambah Faktur"}
-      </h1>
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={3}
+      >
+        <Typography variant="h4" component="h1" gutterBottom>
+          {isEditMode ? "Edit Faktur" : "Tambah Faktur"}
+        </Typography>
+      </Box>
 
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          {/* Invoice Code */}
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Kode Faktur <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              name="invoiceCode"
-              value={formData.invoiceCode}
-              onChange={handleInputChange}
-              className={`w-full p-2 border rounded ${
-                errors.invoiceCode ? "border-red-500" : "border-gray-300"
-              }`}
-              maxLength={32}
-              readOnly={isEditMode}
-              required
-            />
-            {errors.invoiceCode && (
-              <p className="text-red-500 text-xs mt-1">{errors.invoiceCode}</p>
-            )}
-          </div>
+      <form onSubmit={handleSubmit}>
+        <Card sx={{ mb: 4 }}>
+          <CardContent>
+            <Grid container spacing={3} mb={3}>
+              {/* Invoice Code */}
+              <Grid item xs={12} md={6}>
+                <TextField
+                  label="Kode Faktur"
+                  name="invoiceCode"
+                  value={formData.invoiceCode}
+                  onChange={handleInputChange}
+                  fullWidth
+                  required
+                  inputProps={{ maxLength: 32 }}
+                  error={!!errors.invoiceCode}
+                  helperText={errors.invoiceCode}
+                  disabled={isEditMode}
+                />
+              </Grid>
 
-          {/* Invoice Date */}
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Tanggal Faktur <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="date"
-              name="invoiceDate"
-              value={formData.invoiceDate}
-              onChange={handleInputChange}
-              className={`w-full p-2 border rounded ${
-                errors.invoiceDate ? "border-red-500" : "border-gray-300"
-              }`}
-              min="2020-01-01"
-              required
-            />
-            {errors.invoiceDate && (
-              <p className="text-red-500 text-xs mt-1">{errors.invoiceDate}</p>
-            )}
-          </div>
-        </div>
+              {/* Invoice Date */}
+              <Grid item xs={12} md={6}>
+                <TextField
+                  label="Tanggal Faktur"
+                  name="invoiceDate"
+                  type="date"
+                  value={formData.invoiceDate}
+                  onChange={handleInputChange}
+                  fullWidth
+                  required
+                  InputLabelProps={{ shrink: true }}
+                  inputProps={{ min: "2020-01-01" }}
+                  error={!!errors.invoiceDate}
+                  helperText={errors.invoiceDate}
+                />
+              </Grid>
+            </Grid>
 
-        {/* Items Section */}
-        <div className="mb-4">
-          <h2 className="text-lg font-medium mb-2">Items</h2>
-          <div className="overflow-x-auto">
-            <table className="min-w-full bg-white border border-gray-200 mb-3">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="py-2 px-4 border-b text-left">No.</th>
-                  <th className="py-2 px-4 border-b text-left">Nama Produk</th>
-                  <th className="py-2 px-4 border-b text-center">Kuantitas</th>
-                  <th className="py-2 px-4 border-b text-right">Harga</th>
-                  <th className="py-2 px-4 border-b text-right">Subtotal</th>
-                  <th className="py-2 px-4 border-b text-center">Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                {formData.items.map((item, index) => (
-                  <tr key={index} className="hover:bg-gray-50">
-                    <td className="py-2 px-4 border-b">{index + 1}</td>
-                    <td className="py-2 px-4 border-b">
-                      <input
-                        type="text"
-                        value={item.productName}
-                        onChange={(e) =>
-                          handleItemChange(index, "productName", e.target.value)
-                        }
-                        className={`w-full p-2 border rounded ${
-                          errors[`items[${index}].productName`]
-                            ? "border-red-500"
-                            : "border-gray-300"
-                        }`}
-                        maxLength={32}
-                        required
-                      />
-                      {errors[`items[${index}].productName`] && (
-                        <p className="text-red-500 text-xs mt-1">
-                          {errors[`items[${index}].productName`]}
-                        </p>
-                      )}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      <input
-                        type="number"
-                        value={item.qty}
-                        onChange={(e) =>
-                          handleItemChange(index, "qty", Number(e.target.value))
-                        }
-                        className={`w-full p-2 border rounded ${
-                          errors[`items[${index}].qty`]
-                            ? "border-red-500"
-                            : "border-gray-300"
-                        }`}
-                        min="1"
-                        max="1000"
-                        required
-                      />
-                      {errors[`items[${index}].qty`] && (
-                        <p className="text-red-500 text-xs mt-1">
-                          {errors[`items[${index}].qty`]}
-                        </p>
-                      )}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      <input
-                        type="number"
-                        value={item.price}
-                        onChange={(e) =>
-                          handleItemChange(
-                            index,
-                            "price",
-                            Number(e.target.value)
-                          )
-                        }
-                        className={`w-full p-2 border rounded ${
-                          errors[`items[${index}].price`]
-                            ? "border-red-500"
-                            : "border-gray-300"
-                        }`}
-                        min="1"
-                        max="1000000"
-                        required
-                      />
-                      {errors[`items[${index}].price`] && (
-                        <p className="text-red-500 text-xs mt-1">
-                          {errors[`items[${index}].price`]}
-                        </p>
-                      )}
-                    </td>
-                    <td className="py-2 px-4 border-b text-right">
-                      Rp. {(item.qty * item.price).toLocaleString("id-ID")}
-                    </td>
-                    <td className="py-2 px-4 border-b text-center">
-                      {formData.items.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() => removeItem(index)}
-                          className="text-red-500 hover:text-red-700"
-                        >
-                          Hapus
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+            {/* Items Section */}
+            <Box mb={3}>
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                mb={2}
+              >
+                <Typography variant="h6" gutterBottom align="left">
+                  Items
+                </Typography>
+                <Box display="flex" justifyContent="flex-end">
+                  <Button
+                    variant="contained"
+                    color="success"
+                    startIcon={<AddIcon />}
+                    onClick={addItem}
+                  >
+                    Tambah Item
+                  </Button>
+                </Box>
+              </Box>
+              <TableContainer
+                component={Paper}
+                variant="outlined"
+                sx={{ mb: 2 }}
+              >
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>No.</TableCell>
+                      <TableCell>Nama Produk</TableCell>
+                      <TableCell align="center">Kuantitas</TableCell>
+                      <TableCell align="right">Harga</TableCell>
+                      <TableCell align="right">Subtotal</TableCell>
+                      <TableCell align="center">Aksi</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {formData.items.map((item, index) => (
+                      <TableRow key={index} hover>
+                        <TableCell>{index + 1}</TableCell>
+                        <TableCell>
+                          <TextField
+                            value={item.productName}
+                            onChange={(e) =>
+                              handleItemChange(
+                                index,
+                                "productName",
+                                e.target.value
+                              )
+                            }
+                            placeholder="Nama produk"
+                            fullWidth
+                            required
+                            inputProps={{ maxLength: 32 }}
+                            error={!!errors[`items[${index}].productName`]}
+                            helperText={errors[`items[${index}].productName`]}
+                            size="small"
+                          />
+                        </TableCell>
+                        <TableCell align="center">
+                          <TextField
+                            type="number"
+                            value={item.qty.toString()}
+                            onChange={(e) => {
+                              const inputValue = e.target.value;
+                              // Allow empty input for better UX
+                              if (inputValue === "") {
+                                handleItemChange(index, "qty", "");
+                              } else {
+                                const numValue = Number(inputValue);
+                                if (!isNaN(numValue)) {
+                                  handleItemChange(index, "qty", numValue);
+                                }
+                              }
+                            }}
+                            onBlur={() => {
+                              // When field loses focus, ensure value is at least 1
+                              if (item.qty === "" || item.qty < 1) {
+                                handleItemChange(index, "qty", 1);
+                              }
+                            }}
+                            inputProps={{
+                              min: 1,
+                              max: 1000,
+                              step: "1",
+                            }}
+                            error={!!errors[`items[${index}].qty`]}
+                            helperText={errors[`items[${index}].qty`]}
+                            size="small"
+                          />
+                        </TableCell>
+                        <TableCell align="right">
+                          <TextField
+                            type="number"
+                            value={
+                              item.price === 0 ? "" : item.price.toString()
+                            }
+                            onChange={(e) => {
+                              const inputValue = e.target.value;
+                              // Allow empty input for better UX
+                              if (inputValue === "") {
+                                handleItemChange(index, "price", 0);
+                              } else {
+                                const numValue = Number(inputValue);
+                                if (!isNaN(numValue)) {
+                                  handleItemChange(index, "price", numValue);
+                                }
+                              }
+                            }}
+                            inputProps={{
+                              min: 1,
+                              max: 1000000,
+                              step: "any",
+                            }}
+                            error={!!errors[`items[${index}].price`]}
+                            helperText={errors[`items[${index}].price`]}
+                            size="small"
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  Rp.
+                                </InputAdornment>
+                              ),
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell align="right">
+                          Rp. {(item.qty * item.price).toLocaleString("id-ID")}
+                        </TableCell>
+                        <TableCell align="center">
+                          {formData.items.length > 1 && (
+                            <IconButton
+                              onClick={() => removeItem(index)}
+                              color="error"
+                              size="small"
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
 
-          <button
-            type="button"
-            onClick={addItem}
-            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
-          >
-            + Tambah Item
-          </button>
-        </div>
+            {/* Summary Section */}
+            <Box display="flex" justifyContent="flex-end" mt={4}>
+              <Paper sx={{ p: 2, width: { xs: "100%", md: "33%" } }}>
+                <Box display="flex" justifyContent="space-between" mb={1}>
+                  <Typography variant="body1">Subtotal</Typography>
+                  <Typography variant="body1">
+                    Rp.{" "}
+                    {formData.items
+                      .reduce((sum, item) => sum + item.qty * item.price, 0)
+                      .toLocaleString("id-ID")}
+                  </Typography>
+                </Box>
 
-        {/* Summary Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div></div>
-          <div>
-            {/* Totals */}
-            <div className="bg-gray-50 p-4 rounded">
-              <div className="flex justify-between mb-2">
-                <span>Sub Total</span>
-                <span>
-                  Rp.{" "}
-                  {formData.items
-                    .reduce((sum, item) => sum + item.qty * item.price, 0)
-                    .toLocaleString("id-ID")}
-                </span>
-              </div>
-
-              <div className="flex justify-between mb-2">
-                <span>Diskon</span>
-                <div className="flex items-center">
-                  <input
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  mb={1}
+                  alignItems="center"
+                >
+                  <Typography variant="body1">Diskon</Typography>
+                  <TextField
                     type="number"
                     name="discount"
-                    value={formData.discount}
-                    onChange={handleInputChange}
-                    className={`w-32 p-2 border rounded ${
-                      errors.discount ? "border-red-500" : "border-gray-300"
-                    }`}
-                    min="0"
+                    value={formData.discount === 0 ? "" : formData.discount}
+                    onChange={(e) => {
+                      const value =
+                        e.target.value === "" ? 0 : Number(e.target.value);
+                      handleInputChange({
+                        target: {
+                          name: "discount",
+                          value,
+                        },
+                      });
+                    }}
+                    size="small"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">Rp.</InputAdornment>
+                      ),
+                    }}
+                    inputProps={{ min: 0, step: "any" }}
+                    error={!!errors.discount}
+                    helperText={errors.discount}
+                    sx={{ width: "150px" }}
                   />
-                </div>
-              </div>
+                </Box>
 
-              <div className="flex justify-between font-bold pt-2 border-t border-gray-300 mt-2">
-                <span>TOTAL</span>
-                <span>Rp. {formData.grandTotal.toLocaleString("id-ID")}</span>
-              </div>
-            </div>
-          </div>
-        </div>
+                <Divider sx={{ my: 1 }} />
+
+                <Box display="flex" justifyContent="space-between">
+                  <Typography variant="subtitle1" fontWeight="bold">
+                    TOTAL
+                  </Typography>
+                  <Typography variant="subtitle1" fontWeight="bold">
+                    Rp. {formData.grandTotal.toLocaleString("id-ID")}
+                  </Typography>
+                </Box>
+              </Paper>
+            </Box>
+          </CardContent>
+        </Card>
 
         {/* Form Buttons */}
-        <div className="flex justify-end space-x-3">
-          <button
-            type="button"
-            onClick={() =>
-              isEditMode ? navigate(`/detail/${id}`) : navigate("/")
-            }
-            className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-100"
-          >
-            Batal
-          </button>
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Simpan
-          </button>
-        </div>
+        <Box display="flex" justifyContent="flex-end" mt={2}>
+          <Stack direction="row" spacing={2}>
+            <Button
+              variant="outlined"
+              startIcon={<CancelIcon />}
+              onClick={() =>
+                isEditMode ? navigate(`/detail/${id}`) : navigate("/")
+              }
+            >
+              Batal
+            </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              startIcon={<SaveIcon />}
+            >
+              Simpan
+            </Button>
+          </Stack>
+        </Box>
       </form>
-    </div>
+    </Container>
   );
 };
 

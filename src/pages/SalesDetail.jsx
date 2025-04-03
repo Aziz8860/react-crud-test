@@ -1,5 +1,26 @@
-import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import {
+  Container,
+  Typography,
+  Button,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Box,
+  Grid,
+  Divider,
+  Card,
+  CardContent,
+  CircularProgress,
+  Stack
+} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const SalesDetail = () => {
   const { id } = useParams();
@@ -8,111 +29,140 @@ const SalesDetail = () => {
 
   useEffect(() => {
     // Load sale data from localStorage
-    const storedSales = JSON.parse(localStorage.getItem('sales') || '[]');
-    const foundSale = storedSales.find(s => s.invoiceCode === id);
+    const storedSales = JSON.parse(localStorage.getItem("sales") || "[]");
+    const foundSale = storedSales.find((s) => s.invoiceCode === id);
     
     setSale(foundSale || null);
     setLoading(false);
   }, [id]);
 
   const formatDate = (timestamp) => {
-    return new Date(timestamp).toLocaleDateString('id-ID');
+    return new Date(timestamp).toLocaleDateString("id-ID");
   };
 
   if (loading) {
-    return <div className="container mx-auto p-4">Loading...</div>;
+    return (
+      <Container maxWidth="lg" sx={{ py: 4, textAlign: "center" }}>
+        <CircularProgress />
+      </Container>
+    );
   }
 
   if (!sale) {
-    return <div className="container mx-auto p-4">Faktur tidak ditemukan</div>;
+    return (
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Paper sx={{ p: 4, textAlign: "center" }}>
+          <Typography variant="h6">Faktur tidak ditemukan</Typography>
+        </Paper>
+      </Container>
+    );
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Detail Faktur</h1>
-        <div className="flex space-x-2">
-          <Link 
-            to="/" 
-            className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-100"
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Detail Faktur
+        </Typography>
+        <Stack direction="row" spacing={2}>
+          <Button
+            component={Link}
+            to="/"
+            variant="outlined"
+            startIcon={<ArrowBackIcon />}
           >
             Kembali
-          </Link>
-          <Link 
-            to={`/edit/${id}`} 
-            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+          </Button>
+          <Button
+            component={Link}
+            to={`/edit/${id}`}
+            variant="contained"
+            color="primary"
+            startIcon={<EditIcon />}
           >
             Edit
-          </Link>
-        </div>
-      </div>
+          </Button>
+        </Stack>
+      </Box>
 
-      <div className="bg-white p-6 rounded shadow-md">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div>
-            <p className="text-sm text-gray-600">Kode Faktur</p>
-            <p className="font-medium">{sale.invoiceCode}</p>
-          </div>
-          <div>
-            <p className="text-sm text-gray-600">Tanggal Faktur</p>
-            <p className="font-medium">{formatDate(sale.invoiceDate)}</p>
-          </div>
-        </div>
+      <Card sx={{ mb: 4 }}>
+        <CardContent>
+          <Grid container spacing={3} mb={3}>
+            <Grid item xs={12} md={6}>
+              <Typography variant="subtitle2" color="text.secondary">
+                Kode Faktur
+              </Typography>
+              <Typography variant="body1">{sale.invoiceCode}</Typography>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Typography variant="subtitle2" color="text.secondary">
+                Tanggal Faktur
+              </Typography>
+              <Typography variant="body1">{formatDate(sale.invoiceDate)}</Typography>
+            </Grid>
+          </Grid>
 
-        <h2 className="text-lg font-medium mb-3">Items</h2>
-        <div className="overflow-x-auto mb-4">
-          <table className="min-w-full bg-white border border-gray-200">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="py-2 px-4 border-b text-left">No.</th>
-                <th className="py-2 px-4 border-b text-left">Nama Produk</th>
-                <th className="py-2 px-4 border-b text-center">Kuantitas</th>
-                <th className="py-2 px-4 border-b text-right">Harga</th>
-                <th className="py-2 px-4 border-b text-right">Subtotal</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sale.items.map((item, index) => (
-                <tr key={index} className="hover:bg-gray-50">
-                  <td className="py-2 px-4 border-b">{index + 1}</td>
-                  <td className="py-2 px-4 border-b">{item.productName}</td>
-                  <td className="py-2 px-4 border-b text-center">{item.qty}</td>
-                  <td className="py-2 px-4 border-b text-right">
-                    Rp. {item.price.toLocaleString('id-ID')}
-                  </td>
-                  <td className="py-2 px-4 border-b text-right">
-                    Rp. {(item.qty * item.price).toLocaleString('id-ID')}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+            Items
+          </Typography>
+          <TableContainer component={Paper} variant="outlined">
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>No.</TableCell>
+                  <TableCell>Nama Produk</TableCell>
+                  <TableCell align="center">Kuantitas</TableCell>
+                  <TableCell align="right">Harga</TableCell>
+                  <TableCell align="right">Subtotal</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {sale.items.map((item, index) => (
+                  <TableRow key={index} hover>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{item.productName}</TableCell>
+                    <TableCell align="center">{item.qty}</TableCell>
+                    <TableCell align="right">
+                      Rp. {item.price.toLocaleString("id-ID")}
+                    </TableCell>
+                    <TableCell align="right">
+                      Rp. {(item.qty * item.price).toLocaleString("id-ID")}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
 
-        <div className="flex justify-end">
-          <div className="w-full md:w-1/3">
-            <div className="bg-gray-50 p-4 rounded">
-              <div className="flex justify-between mb-2">
-                <span>Subtotal</span>
-                <span>
-                  Rp. {sale.items.reduce((sum, item) => sum + (item.qty * item.price), 0).toLocaleString('id-ID')}
-                </span>
-              </div>
+          <Box sx={{ mt: 3, display: "flex", justifyContent: "flex-end" }}>
+            <Paper sx={{ p: 2, width: { xs: "100%", md: "33%" } }}>
+              <Box display="flex" justifyContent="space-between" mb={1}>
+                <Typography variant="body1">Subtotal</Typography>
+                <Typography variant="body1">
+                  Rp. {sale.items.reduce((sum, item) => sum + (item.qty * item.price), 0).toLocaleString("id-ID")}
+                </Typography>
+              </Box>
               
-              <div className="flex justify-between mb-2">
-                <span>Diskon</span>
-                <span>Rp. {sale.discount.toLocaleString('id-ID')}</span>
-              </div>
+              <Box display="flex" justifyContent="space-between" mb={1}>
+                <Typography variant="body1">Diskon</Typography>
+                <Typography variant="body1">
+                  Rp. {sale.discount.toLocaleString("id-ID")}
+                </Typography>
+              </Box>
               
-              <div className="flex justify-between font-bold pt-2 border-t border-gray-300 mt-2">
-                <span>TOTAL</span>
-                <span>Rp. {sale.grandTotal.toLocaleString('id-ID')}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+              <Divider sx={{ my: 1 }} />
+              
+              <Box display="flex" justifyContent="space-between">
+                <Typography variant="subtitle1" fontWeight="bold">TOTAL</Typography>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  Rp. {sale.grandTotal.toLocaleString("id-ID")}
+                </Typography>
+              </Box>
+            </Paper>
+          </Box>
+        </CardContent>
+      </Card>
+    </Container>
   );
 };
 
