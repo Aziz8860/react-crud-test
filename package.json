@@ -1,7 +1,7 @@
 {
   "name": "react-crud-test",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -15,11 +15,9 @@
     "@fontsource/lato": "^5.2.5",
     "@mui/icons-material": "^7.0.1",
     "@mui/material": "^7.0.1",
-    "@tailwindcss/vite": "^4.1.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^7.4.1",
-    "tailwindcss": "^4.1.1"
+    "react-router-dom": "^7.4.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

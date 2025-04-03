@@ -17,7 +17,7 @@ import {
   Card,
   CardContent,
   CircularProgress,
-  Stack
+  Stack,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -31,7 +31,7 @@ const SalesDetail = () => {
     // Load sale data from localStorage
     const storedSales = JSON.parse(localStorage.getItem("sales") || "[]");
     const foundSale = storedSales.find((s) => s.invoiceCode === id);
-    
+
     setSale(foundSale || null);
     setLoading(false);
   }, [id]);
@@ -60,7 +60,12 @@ const SalesDetail = () => {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={3}
+      >
         <Typography variant="h4" component="h1" gutterBottom>
           Detail Faktur
         </Typography>
@@ -98,11 +103,13 @@ const SalesDetail = () => {
               <Typography variant="subtitle2" color="text.secondary">
                 Tanggal Faktur
               </Typography>
-              <Typography variant="body1">{formatDate(sale.invoiceDate)}</Typography>
+              <Typography variant="body1">
+                {formatDate(sale.invoiceDate)}
+              </Typography>
             </Grid>
           </Grid>
 
-          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+          <Typography variant="h6" gutterBottom sx={{ mt: 2 }} align="left">
             Items
           </Typography>
           <TableContainer component={Paper} variant="outlined">
@@ -139,21 +146,26 @@ const SalesDetail = () => {
               <Box display="flex" justifyContent="space-between" mb={1}>
                 <Typography variant="body1">Subtotal</Typography>
                 <Typography variant="body1">
-                  Rp. {sale.items.reduce((sum, item) => sum + (item.qty * item.price), 0).toLocaleString("id-ID")}
+                  Rp.{" "}
+                  {sale.items
+                    .reduce((sum, item) => sum + item.qty * item.price, 0)
+                    .toLocaleString("id-ID")}
                 </Typography>
               </Box>
-              
+
               <Box display="flex" justifyContent="space-between" mb={1}>
                 <Typography variant="body1">Diskon</Typography>
                 <Typography variant="body1">
                   Rp. {sale.discount.toLocaleString("id-ID")}
                 </Typography>
               </Box>
-              
+
               <Divider sx={{ my: 1 }} />
-              
+
               <Box display="flex" justifyContent="space-between">
-                <Typography variant="subtitle1" fontWeight="bold">TOTAL</Typography>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  TOTAL
+                </Typography>
                 <Typography variant="subtitle1" fontWeight="bold">
                   Rp. {sale.grandTotal.toLocaleString("id-ID")}
                 </Typography>

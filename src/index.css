@@ -1,19 +1,8 @@
-/* Base styles */
 :root {
   font-family: "Lato", "Arial", sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  color-scheme: light dark;
-  background-color: #f5f5f5;
 }
 
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-/* Hide number input spinners */
+/* Hide number input spinners - Keep this as it's browser-specific */
 /* Chrome, Safari, Edge, Opera */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
@@ -26,5 +15,3 @@ input[type="number"] {
   -moz-appearance: textfield;
   appearance: textfield; /* Standard property for compatibility */
 }
-
-/* Material UI will handle most styling through its ThemeProvider */

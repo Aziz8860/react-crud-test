@@ -63,7 +63,6 @@ const SalesForm = () => {
     }
   }, [id, isEditMode, navigate]);
 
-  // Calculate grand total whenever items or discount change
   useEffect(() => {
     const itemsTotal = formData.items.reduce((sum, item) => {
       return sum + Number(item.qty) * Number(item.price);
@@ -263,7 +262,6 @@ const SalesForm = () => {
                 <Box display="flex" justifyContent="flex-end">
                   <Button
                     variant="contained"
-                    color="success"
                     startIcon={<AddIcon />}
                     onClick={addItem}
                   >
