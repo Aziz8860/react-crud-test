@@ -122,6 +122,15 @@ const SalesForm = () => {
     // Validate discount
     if (formData.discount < 0) {
       newErrors.discount = "Diskon tidak boleh negatif";
+    } else {
+      // Calculate subtotal to compare with discount
+      const subtotal = formData.items.reduce((sum, item) => {
+        return sum + Number(item.qty) * Number(item.price);
+      }, 0);
+
+      if (Number(formData.discount) > subtotal) {
+        newErrors.discount = "Diskon tidak boleh melebihi subtotal";
+      }
     }
 
     setErrors(newErrors);
