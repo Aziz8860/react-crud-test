@@ -237,7 +237,10 @@ function App() {
           }}
         >
           <Toolbar>
-            <a href="/" style={{ color: "inherit", textDecoration: "none" }}>
+            <a
+              href="/react-crud-test"
+              style={{ color: "inherit", textDecoration: "none" }}
+            >
               <IconButton
                 size="large"
                 edge="start"
