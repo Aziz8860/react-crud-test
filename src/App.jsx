@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import {
   CssBaseline,
@@ -223,82 +223,82 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <BrowserRouter>
-        <Box
-          sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+      {/* Remove BrowserRouter since it's now in main.jsx */}
+      <Box
+        sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+      >
+        <AppBar
+          position="static"
+          elevation={0}
+          sx={{
+            backgroundColor: "#dddddd",
+            color: "#000000",
+            borderBottom: `2px solid ${theme.palette.primary.main}`,
+          }}
         >
-          <AppBar
-            position="static"
-            elevation={0}
-            sx={{
-              backgroundColor: "#dddddd",
-              color: "#000000",
-              borderBottom: `2px solid ${theme.palette.primary.main}`,
-            }}
-          >
-            <Toolbar>
-              <a href="/" style={{ color: "inherit", textDecoration: "none" }}>
-                <IconButton
-                  size="large"
-                  edge="start"
-                  color="inherit"
-                  aria-label="logo"
-                  sx={{ mr: 2 }}
-                >
-                  <BoltIcon />
-                </IconButton>
-              </a>
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{ flexGrow: 1, fontWeight: "bold" }}
+          <Toolbar>
+            <a href="/" style={{ color: "inherit", textDecoration: "none" }}>
+              <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="logo"
+                sx={{ mr: 2 }}
               >
-                Faktur Digital App
-              </Typography>
-            </Toolbar>
-          </AppBar>
+                <BoltIcon />
+              </IconButton>
+            </a>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexGrow: 1, fontWeight: "bold" }}
+            >
+              Faktur Digital App
+            </Typography>
+          </Toolbar>
+        </AppBar>
 
-          <Container component="main" sx={{ flexGrow: 1, py: 4 }}>
-            <Routes>
-              <Route path="/" element={<SalesList />} />
-              <Route path="/add" element={<SalesForm />} />
-              <Route path="/edit/:id" element={<SalesForm />} />
-              <Route path="/detail/:id" element={<SalesDetail />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </Container>
+        <Container component="main" sx={{ flexGrow: 1, py: 4 }}>
+          <Routes>
+            <Route path="/" element={<SalesList />} />
+            <Route path="/add" element={<SalesForm />} />
+            <Route path="/edit/:id" element={<SalesForm />} />
+            <Route path="/detail/:id" element={<SalesDetail />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Container>
 
-          <Box
-            component="footer"
-            sx={{
-              py: 2,
-              mt: "auto",
-              backgroundColor: "#dddddd",
-              color: "#000000",
-              borderTop: `2px solid ${theme.palette.primary.main}`,
-            }}
+        <Box
+          component="footer"
+          sx={{
+            py: 2,
+            mt: "auto",
+            backgroundColor: "#dddddd",
+            color: "#000000",
+            borderTop: `2px solid ${theme.palette.primary.main}`,
+          }}
+        >
+          <Grid
+            container
+            spacing={2}
+            justifyContent="center"
+            alignItems="center"
+            sx={{ px: { xs: 2, sm: 3 } }}
           >
             <Grid
-              container
-              spacing={2}
-              justifyContent="center"
-              alignItems="center"
-              sx={{ px: { xs: 2, sm: 3 } }}
+              item
+              xs={12}
+              md={4}
+              sx={{ textAlign: { xs: "center", md: "right" } }}
             >
-              <Grid
-                item
-                xs={12}
-                md={4}
-                sx={{ textAlign: { xs: "center", md: "right" } }}
-              >
-                <Typography variant="body2">
-                  &copy; {new Date().getFullYear()} All Rights Reserved.
-                </Typography>
-              </Grid>
+              <Typography variant="body2">
+                &copy; {new Date().getFullYear()} All Rights Reserved.
+              </Typography>
             </Grid>
-          </Box>
+          </Grid>
         </Box>
-      </BrowserRouter>
+      </Box>
+      {/* Remove closing BrowserRouter tag */}
     </ThemeProvider>
   );
 }
