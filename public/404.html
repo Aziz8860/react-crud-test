@@ -3,14 +3,68 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Redirecting...</title>
-    <script>
-      // Redirect to index.html with the correct path
-      var path = window.location.pathname;
-      window.location.replace("/react-crud-test/" + path);
-    </script>
+    <title>404 - Page Not Found</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <style>
+      body {
+        font-family: "Lato", Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f5f5f5;
+        color: #000000;
+      }
+      .container {
+        text-align: center;
+        padding: 2rem;
+        border: 2px solid #000000;
+        background-color: #ffffff;
+        box-shadow: 4px 4px 0px #000000;
+      }
+      .icon {
+        font-size: 100px;
+        margin-bottom: 1rem;
+      }
+      h1 {
+        font-weight: 900;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+      }
+      p {
+        margin-bottom: 1.5rem;
+      }
+      a {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background-color: #000000;
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: bold;
+        border: 2px solid #000000;
+        box-shadow: 2px 2px 0px #000000;
+        transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+      }
+      a:hover {
+        background-color: #333333;
+      }
+      a:active {
+        transform: translate(2px, 2px);
+        box-shadow: 0px 0px 0px #000000;
+      }
+    </style>
   </head>
   <body>
-    <h1>Redirecting...</h1>
+    <div class="container">
+      <span class="material-icons icon">error_outline</span>
+      <h1>404 - Page Not Found</h1>
+      <p>The page you are looking for doesn't exist or has been moved.</p>
+      <a href="/react-crud-test/">Back to Home</a>
+    </div>
   </body>
 </html>
